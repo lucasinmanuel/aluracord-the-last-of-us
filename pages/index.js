@@ -33,15 +33,19 @@ export default function PaginaInicial() {
       <Box
         styleSheet={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          backgroundColor: appConfig.theme.colors.primary['100'],
+          zIndex: '1', width: '100vw',height: '100vh',
           backgroundImage: 'url(https://virtualbackgrounds.site/wp-content/uploads/2020/07/the-last-of-us-streets-of-pittsburgh-1536x864.jpg)', width: '100%', height: '100%',
           backgroundRepeat: 'no-repeat', backgroundSize: '100% 100%', backgroundBlendMode: 'multiply',
         }}
       >
+        <video muted autoPlay loop>
+            <source src="/bg-the-last-of-us.mp4" type="video/mp4" ></source>
+        </video>
+      
         <Box
           styleSheet={{
             display: 'flex', position: 'relative',
-            alignItems: 'center',
+            alignItems: 'center', zIndex: '5',
             justifyContent: 'space-between',
             flexDirection: {
               xs: 'column',
@@ -54,11 +58,10 @@ export default function PaginaInicial() {
             border: '1.5px solid' + appConfig.theme.colors.neutrals[400],
           }}
         >
-          <Image 
+          <img className="personagem-form" 
             src="https://i.imgur.com/qRUp6ER.png"
             styleSheet={{
-            position: 'absolute', top: '0', left: '0', zIndex: '1',
-            width: '500px',height: '100%', opacity: '0.3'
+            
           }}/>
 
           {/* Formulário */}
@@ -69,7 +72,7 @@ export default function PaginaInicial() {
               roteamento.push('/chat')
             }}
             styleSheet={{
-              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', zIndex: '5',
+              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', zIndex: '10',
               width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '32px', position: 'relative',
             }}
           >
@@ -155,6 +158,23 @@ export default function PaginaInicial() {
           {/* Photo Area */}
         </Box>
       </Box>
+      <style jsx>{`
+        video{
+          margin-top: -10px;
+          position: absolute;
+          z-index: 2;
+          max-width: 100%;    
+        }
+        .personagem-form{
+          position: absolute; 
+          top: 0; 
+          left: 0; 
+          zIndex: 5;
+          width: 500px;
+          height: 100%; 
+          opacity: 0.3;
+        }
+      `}</style>
     </>
   );
 }
