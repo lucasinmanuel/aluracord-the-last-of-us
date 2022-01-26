@@ -1,8 +1,8 @@
 import appConfig from '../config.json';
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
 import React, {useState} from 'react';
-import {useRouter} from 'next/router'
-import perfilUndefined from '../public/per'
+import {useRouter} from 'next/router';
+import { motion } from 'framer-motion';
 
 function Titulo(props){
   const Tag = props.tag || 'h1'
@@ -24,7 +24,7 @@ function Titulo(props){
 
 export default function PaginaInicial() {
 
-  const [username,setUsername] = useState(['LucasInmanuel','.png']);
+  const [username,setUsername] = useState(['LucasInmanuel','.png'])
   const [usernamePage,setUsernamePage] = useState('https://github.com/');
   const roteamento = useRouter();
 
@@ -40,7 +40,7 @@ export default function PaginaInicial() {
       >
         <Box
           styleSheet={{
-            display: 'flex',
+            display: 'flex', position: 'relative',
             alignItems: 'center',
             justifyContent: 'space-between',
             flexDirection: {
@@ -54,6 +54,13 @@ export default function PaginaInicial() {
             border: '1.5px solid' + appConfig.theme.colors.neutrals[400],
           }}
         >
+          <Image 
+            src="https://i.imgur.com/qRUp6ER.png"
+            styleSheet={{
+            position: 'absolute', top: '0', left: '0', zIndex: '1',
+            width: '500px',height: '100%', opacity: '0.3'
+          }}/>
+
           {/* Formulário */}
           <Box
             as="form"
@@ -62,8 +69,8 @@ export default function PaginaInicial() {
               roteamento.push('/chat')
             }}
             styleSheet={{
-              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-              width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '32px',
+              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', zIndex: '5',
+              width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '32px', position: 'relative',
             }}
           >
             <Titulo tag="h1">Boas vindas de volta!</Titulo>
@@ -78,7 +85,9 @@ export default function PaginaInicial() {
                 const caracteres = valor.length
                 setUsername([valor,'.png'])
                 if(caracteres <= 2){
-                  setUsernamePage('')
+                  setUsernamePage('https://via.placeholder.com/300/?text=')
+                }else{
+                  setUsernamePage('https://github.com/')
                 }
                 
               }}
@@ -120,7 +129,7 @@ export default function PaginaInicial() {
               borderColor: appConfig.theme.colors.neutrals[400],
               borderRadius: '10px',
               flex: 1,
-              minHeight: '240px',
+              minHeight: '240px', zIndex: '5',
             }}
           >
             <Image
