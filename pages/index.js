@@ -1,38 +1,10 @@
 import appConfig from '../config.json';
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
-
-function GlobalStyle(){
-  return (
-    <style global jsx>{`
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      list-style: none;
-      }
-      body {
-        font-family: 'Open Sans', sans-serif;
-      }
-      /* App fit Height */ 
-      html, body, #__next {
-        min-height: 100vh;
-        display: flex;
-        flex: 1;
-      }
-      #__next {
-        flex: 1;
-      }
-      #__next > * {
-        flex: 1;
-    }
-    /* ./App fit Height */ 
-      
-    `}</style>
-  )
-}
+import React, {useState} from 'react';
+import {useRouter} from 'next/router'
+import perfilUndefined from '../public/per'
 
 function Titulo(props){
-  console.log(props)
   const Tag = props.tag || 'h1'
   return (
     <>
@@ -49,28 +21,15 @@ function Titulo(props){
   )
 
 }
-/*
-function HomePage() {
-
-  return(
-    <div>
-      <GlobalStyle />
-        <Titulo tag="h1">Boas vindas de volta!</Titulo>
-        <h2>Discord - Alura Matrix</h2>
-        
-    </div>
-  )
-
-}
-
-export default HomePage*/
 
 export default function PaginaInicial() {
-  const username = 'LucasInmanuel';
+
+  const [username,setUsername] = useState(['LucasInmanuel','.png']);
+  const [usernamePage,setUsernamePage] = useState('https://github.com/');
+  const roteamento = useRouter();
 
   return (
     <>
-      <GlobalStyle />
       <Box
         styleSheet={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -98,6 +57,10 @@ export default function PaginaInicial() {
           {/* Formulário */}
           <Box
             as="form"
+            onSubmit={function (e){
+              e.preventDefault()
+              roteamento.push('/chat')
+            }}
             styleSheet={{
               display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
               width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '32px',
@@ -109,6 +72,16 @@ export default function PaginaInicial() {
             </Text>
 
             <TextField
+              value={username[0]} 
+              onChange={function (e){
+                const valor = e.target.value
+                const caracteres = valor.length
+                setUsername([valor,'.png'])
+                if(caracteres <= 2){
+                  setUsernamePage('')
+                }
+                
+              }}
               fullWidth
               textFieldColors={{
                 neutral: {
@@ -155,7 +128,8 @@ export default function PaginaInicial() {
                 borderRadius: '50%',
                 marginBottom: '16px',
               }}
-              src={`https://github.com/${username}.png`}
+              src={`${usernamePage}`+`${username[0]}`+`${username[1]}`}
+              alt="Usuário inexistente :("
             />
             <Text
               variant="body4"
@@ -166,7 +140,7 @@ export default function PaginaInicial() {
                 borderRadius: '1000px'
               }}
             >
-              {username}
+              {username[0]}
             </Text>
           </Box>
           {/* Photo Area */}
