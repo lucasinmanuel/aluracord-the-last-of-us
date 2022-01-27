@@ -26,11 +26,6 @@ export default function PaginaInicial() {
   const [username,setUsername] = useState(['LucasInmanuel','.png'])
   const [usernamePage,setUsernamePage] = useState('https://github.com/');
   const roteamento = useRouter();
-
-  function Play(){
-    var audio = document.getElementById('a1');
-      return audio.play();
-  }
   
   return (
     <>
@@ -65,10 +60,6 @@ export default function PaginaInicial() {
             border: '2px solid' + appConfig.theme.colors.neutrals[400],
           }}
         >
-          <button onClick={Play}>Click</button>
-          <audio id="a1">
-            <source src="/future-days.mp3" type="audio/mp3"></source>
-          </audio>
 
           <img alt="Joel tocando violão" className="personagem-form1" 
             src="https://i.imgur.com/qRUp6ER.png"
@@ -183,16 +174,6 @@ export default function PaginaInicial() {
           top: 0;
           left: 0;
           z-index: -1;
-        }
-
-        button{
-          position: absolute; 
-          top: 0; 
-          left: 0;
-          width: 50px;
-          height: 50px;
-          background-color: white;
-          cursor: pointer;
         }
       
         .personagem-form1{
