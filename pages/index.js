@@ -1,8 +1,7 @@
 import appConfig from '../config.json';
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {useRouter} from 'next/router';
-import { motion } from 'framer-motion';
 
 function Titulo(props){
   const Tag = props.tag || 'h1'
@@ -28,20 +27,26 @@ export default function PaginaInicial() {
   const [usernamePage,setUsernamePage] = useState('https://github.com/');
   const roteamento = useRouter();
 
+  function Play(){
+    var audio = document.getElementById('a1');
+      return audio.play();
+  }
+  
   return (
     <>
       <Box
         styleSheet={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          zIndex: '1', width: '100vw',height: '100vh',
-          backgroundImage: 'url(https://virtualbackgrounds.site/wp-content/uploads/2020/07/the-last-of-us-streets-of-pittsburgh-1536x864.jpg)', width: '100%', height: '100%',
-          backgroundRepeat: 'no-repeat', backgroundSize: '100% 100%', backgroundBlendMode: 'multiply',
+          zIndex: '1',width: '100%', height: '100vh', 
+          overflow: 'hidden',
         }}
       >
-        <video muted autoPlay loop>
-            <source src="/bg-the-last-of-us.mp4" type="video/mp4" ></source>
-        </video>
-      
+      {/*Video de fundo*/}
+      <video poster="https://virtualbackgrounds.site/wp-content/uploads/2020/07/the-last-of-us-streets-of-pittsburgh-1536x864.jpg" 
+      autoPlay playsInline muted loop>
+          <source src="/bg-the-last-of-us.mp4" type="video/mp4" ></source>
+      </video>
+      {/*Video de fundo*/}
         <Box
           styleSheet={{
             display: 'flex', position: 'relative',
@@ -54,16 +59,27 @@ export default function PaginaInicial() {
             width: '100%', maxWidth: '750px',
             borderRadius: '5px', padding: '32px', margin: '16px',
             boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
-            backgroundColor: appConfig.theme.colors.neutrals[200],
-            border: '1.5px solid' + appConfig.theme.colors.neutrals[400],
+            backgroundImage: 'url('+'https://i.imgur.com/ExUFiA7.jpg'+')',
+            backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundBlendMode: 'multiply',
+            backgroundColor: '#6d6d6d',
+            border: '2px solid' + appConfig.theme.colors.neutrals[400],
           }}
         >
-          <img className="personagem-form" 
-            src="https://i.imgur.com/qRUp6ER.png"
-            styleSheet={{
-            
-          }}/>
+          <button onClick={Play}>Click</button>
+          <audio id="a1">
+            <source src="/future-days.mp3" type="audio/mp3"></source>
+          </audio>
 
+          <img alt="Joel tocando violão" className="personagem-form1" 
+            src="https://i.imgur.com/qRUp6ER.png"
+          />
+          <img alt="Joel tocando violão" className="personagem-form2" 
+            src="https://i.imgur.com/qRUp6ER.png"
+          />
+          <img alt="Joel tocando violão" className="personagem-form3" 
+            src="https://i.imgur.com/qRUp6ER.png"
+          />
+          
           {/* Formulário */}
           <Box
             as="form"
@@ -77,7 +93,7 @@ export default function PaginaInicial() {
             }}
           >
             <Titulo tag="h1">Boas vindas de volta!</Titulo>
-            <Text variant="body3" styleSheet={{ fontWeight: 'bold', marginBottom: '32px', color: appConfig.theme.colors.neutrals[400] }}>
+            <Text variant="body3" styleSheet={{ fontWeight: 'bold', marginBottom: '32px', color: appConfig.theme.colors.primary[200] }}>
               {appConfig.name}
             </Text>
 
@@ -128,11 +144,11 @@ export default function PaginaInicial() {
               maxWidth: '200px',
               padding: '16px',
               backgroundColor: appConfig.theme.colors.neutrals[300],
-              border: '1px solid',
+              border: '2px solid',
               borderColor: appConfig.theme.colors.neutrals[400],
               borderRadius: '10px',
               flex: 1,
-              minHeight: '240px', zIndex: '5',
+              minHeight: '240px', zIndex: '5', zIndex: '10'
             }}
           >
             <Image
@@ -160,19 +176,69 @@ export default function PaginaInicial() {
       </Box>
       <style jsx>{`
         video{
-          margin-top: -10px;
-          position: absolute;
-          z-index: 2;
-          max-width: 100%;    
+          width: 100vw;
+          height: 100vh;
+          object-fit: cover;
+          position: fixed;
+          top: 0;
+          left: 0;
+          z-index: -1;
         }
-        .personagem-form{
+
+        button{
           position: absolute; 
           top: 0; 
-          left: 0; 
-          zIndex: 5;
+          left: 0;
+          width: 50px;
+          height: 50px;
+          background-color: white;
+          cursor: pointer;
+        }
+      
+        .personagem-form1{
+          position: absolute; 
+          top: 0; 
+          left: -1px;
+          z-Index: 5;
           width: 500px;
           height: 100%; 
           opacity: 0.3;
+          animation-delay: 2s;
+          animation-duration: 3s;
+          animation-name: slide1;
+          animation-iteration-count: infinite;
+        }
+        @keyframes slide1 {
+          0% {left:0p;top:0px}
+          50% {left:8px;top:-3px}
+          100% {left:0px;top:0px}
+        }
+        .personagem-form2{
+          position: absolute; 
+          top: 0; 
+          left: -1px;
+          z-Index: 6;
+          width: 500px;
+          height: 100%; 
+          opacity: 0.3;
+          animation-delay: 4s;
+          animation-duration: 3s;
+          animation-name: slide1;
+          animation-iteration-count: infinite;
+        }
+        @keyframes slide2 {
+          0% {left:0p;top:0px}
+          50% {left:16px;top:3px}
+          100% {left:0p;top:0px}
+        }
+        .personagem-form3{
+          position: absolute; 
+          top: 0; 
+          left: -1px;
+          z-Index: 7;
+          width: 500px;
+          height: 100%; 
+          opacity: 1;
         }
       `}</style>
     </>
