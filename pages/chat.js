@@ -67,7 +67,11 @@ export default function ChatPage() {
                     display: flex;
                     flex: 1;
                     height: 80%;
-                    background-color: ${appConfig.theme.colors.neutrals[300]};
+                    background-color: ${appConfig.theme.colors.neutrals[400]};
+                    background-image: url(/bg-ellie.jpeg);
+                    background-repeat: no-repeat; 
+                    background-size: cover; 
+                    background-blend-mode: multiply;
                     flex-direction: column;
                     border-radius: 5px;
                     padding: 16px;

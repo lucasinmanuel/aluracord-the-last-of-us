@@ -54,7 +54,7 @@ export default function PaginaInicial() {
             width: '100%', maxWidth: '750px',
             borderRadius: '5px', padding: '32px', margin: '16px',
             boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
-            backgroundImage: 'url(' + 'https://i.imgur.com/ExUFiA7.jpg' + ')',
+            backgroundImage: 'url(' + 'bg-house-joel.jpg' + ')',
             backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundBlendMode: 'multiply',
             backgroundColor: '#6d6d6d',
             border: '2px solid' + appConfig.theme.colors.neutrals[400],
@@ -62,13 +62,13 @@ export default function PaginaInicial() {
         >
 
           <img alt="Joel tocando violão" className="personagem-form1"
-            src="https://i.imgur.com/qRUp6ER.png"
+            src="/joel.png"
           />
           <img alt="Joel tocando violão" className="personagem-form2"
-            src="https://i.imgur.com/qRUp6ER.png"
+            src="/joel.png"
           />
           <img alt="Joel tocando violão" className="personagem-form3"
-            src="https://i.imgur.com/qRUp6ER.png"
+            src="/joel.png"
           />
 
           {/* Formulário */}
