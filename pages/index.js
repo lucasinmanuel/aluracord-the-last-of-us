@@ -1,9 +1,9 @@
 import appConfig from '../config.json';
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
-import React, {useState,useEffect} from 'react';
-import {useRouter} from 'next/router';
+import React, { useState} from 'react';
+import { useRouter } from 'next/router';
 
-function Titulo(props){
+function Titulo(props) {
   const Tag = props.tag || 'h1'
   return (
     <>
@@ -23,25 +23,25 @@ function Titulo(props){
 
 export default function PaginaInicial() {
 
-  const [username,setUsername] = useState(['LucasInmanuel','.png'])
-  const [usernamePage,setUsernamePage] = useState('https://github.com/');
+  const [username, setUsername] = useState(['LucasInmanuel', '.png'])
+  const [usernamePage, setUsernamePage] = useState('https://github.com/');
   const roteamento = useRouter();
-  
+
   return (
     <>
       <Box
         styleSheet={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          zIndex: '1',width: '100%', height: '100vh', 
+          zIndex: '1', width: '100%', height: '100vh',
           overflow: 'hidden',
         }}
       >
-      {/*Video de fundo*/}
-      <video poster="https://virtualbackgrounds.site/wp-content/uploads/2020/07/the-last-of-us-streets-of-pittsburgh-1536x864.jpg" 
-      autoPlay playsInline muted loop>
+        {/*Video de fundo*/}
+        <video poster="https://virtualbackgrounds.site/wp-content/uploads/2020/07/the-last-of-us-streets-of-pittsburgh-1536x864.jpg"
+          autoPlay playsInline muted loop>
           <source src="/bg-the-last-of-us.mp4" type="video/mp4" ></source>
-      </video>
-      {/*Video de fundo*/}
+        </video>
+        {/*Video de fundo*/}
         <Box
           styleSheet={{
             display: 'flex', position: 'relative',
@@ -54,27 +54,27 @@ export default function PaginaInicial() {
             width: '100%', maxWidth: '750px',
             borderRadius: '5px', padding: '32px', margin: '16px',
             boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
-            backgroundImage: 'url('+'https://i.imgur.com/ExUFiA7.jpg'+')',
+            backgroundImage: 'url(' + 'https://i.imgur.com/ExUFiA7.jpg' + ')',
             backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundBlendMode: 'multiply',
             backgroundColor: '#6d6d6d',
             border: '2px solid' + appConfig.theme.colors.neutrals[400],
           }}
         >
 
-          <img alt="Joel tocando violão" className="personagem-form1" 
+          <img alt="Joel tocando violão" className="personagem-form1"
             src="https://i.imgur.com/qRUp6ER.png"
           />
-          <img alt="Joel tocando violão" className="personagem-form2" 
+          <img alt="Joel tocando violão" className="personagem-form2"
             src="https://i.imgur.com/qRUp6ER.png"
           />
-          <img alt="Joel tocando violão" className="personagem-form3" 
+          <img alt="Joel tocando violão" className="personagem-form3"
             src="https://i.imgur.com/qRUp6ER.png"
           />
-          
+
           {/* Formulário */}
           <Box
             as="form"
-            onSubmit={function (e){
+            onSubmit={function (e) {
               e.preventDefault()
               roteamento.push('/chat')
             }}
@@ -89,17 +89,17 @@ export default function PaginaInicial() {
             </Text>
 
             <TextField
-              value={username[0]} 
-              onChange={function (e){
+              value={username[0]}
+              onChange={function (e) {
                 const valor = e.target.value
                 const caracteres = valor.length
-                setUsername([valor,'.png'])
-                if(caracteres <= 2){
+                setUsername([valor, '.png'])
+                if (caracteres <= 2) {
                   setUsernamePage('https://via.placeholder.com/300/?text=')
-                }else{
+                } else {
                   setUsernamePage('https://github.com/')
                 }
-                
+
               }}
               fullWidth
               textFieldColors={{
@@ -147,7 +147,7 @@ export default function PaginaInicial() {
                 borderRadius: '50%',
                 marginBottom: '16px',
               }}
-              src={`${usernamePage}`+`${username[0]}`+`${username[1]}`}
+              src={`${usernamePage}` + `${username[0]}` + `${username[1]}`}
               alt="Usuário inexistente :("
             />
             <Text
