@@ -221,6 +221,11 @@ export default function PaginaInicial() {
           height: 100%; 
           opacity: 1;
         }
+        @media screen and (max-width: 720px){
+          .personagem-form1,.personagem-form2,.personagem-form3{
+            display:none;
+          }
+        }
       `}</style>
     </>
   );
