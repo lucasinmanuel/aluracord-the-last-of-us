@@ -1,5 +1,12 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import appConfig from '../config.json';
+import { createClient } from '@supabase/supabase-js';
+
+
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzI5ODIyMywiZXhwIjoxOTU4ODc0MjIzfQ.pIJJlhtcdM4SP1KY-S3e5yMya4qI07xbcWUSUVkSp6w';
+const SUPABASE_URL = 'https://kamtykmggubseozmvtuj.supabase.co';
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
 
 export default function ChatPage() {
   
@@ -7,6 +14,16 @@ export default function ChatPage() {
   
     const [mensagem, setMensagem] = useState('');
     const [listaDeMensagens, setListaDeMensagens] = useState([]);
+
+    useEffect(() => {
+        supabaseClient
+        .from('mensagens')
+        .select('*')
+        .order('id',{ascending:false})
+        .then(({data}) => {
+            setListaDeMensagens(data)
+        })
+    }, []);
 
     /*
     // Usuário
@@ -21,15 +38,24 @@ export default function ChatPage() {
     */
     function handleNovaMensagem(novaMensagem) {
         const mensagem = {
-            id: listaDeMensagens.length + 1,
+            //id: listaDeMensagens.length + 1,
             de: 'LucasInmanuel',
             texto: novaMensagem,
         };
 
-        setListaDeMensagens([
-            mensagem,
-            ...listaDeMensagens,
-        ]);
+        supabaseClient
+            .from('mensagens')
+            .insert([
+                mensagem
+            ])
+            .then(({data}) => {
+                console.log('me retornou isso',data)
+                setListaDeMensagens([
+                    data[0],
+                    ...listaDeMensagens,
+                ]);
+            })
+
         setMensagem('');
     }
 
@@ -67,7 +93,7 @@ export default function ChatPage() {
                     display: flex;
                     flex: 1;
                     height: 80%;
-                    background-color: ${appConfig.theme.colors.neutrals[400]};
+                    background-color: ${appConfig.theme.colors.neutrals[100]};
                     background-image: url(/bg-ellie.jpeg);
                     background-repeat: no-repeat; 
                     background-size: cover; 
@@ -123,7 +149,7 @@ export default function ChatPage() {
                     border: 1px solid ${appConfig.theme.colors.neutrals["400"]};
                 }
                 li.mensagem:hover{
-                    background-color: ${appConfig.theme.colors.neutrals[200]};
+                    background-color: ${appConfig.theme.colors.neutrals[300]};
                 }
                 .perfil-wrapper{
                     margin-bottom: 8px;
@@ -138,10 +164,10 @@ export default function ChatPage() {
                     display: inline-block;
                     margin-right: 8px;
                 }
-                .perfil-codigo{
+                .perfil-data{
                     font-size: 10px;
                     margin-left: 8px;
-                    color: ${appConfig.theme.colors.neutrals[300]};
+                    color: white;
                 }
                 .mensagem-enviar{
                     font-size: 17px;
@@ -202,9 +228,9 @@ function MessageList(props) {
                 return (
                     <li className="mensagem" key={mensagem.id}>
                         <div className="perfil-wrapper">
-                            <img className="perfil-img" src={`https://github.com/lucasinmanuel.png`} />
+                            <img className="perfil-img" src={`https://github.com/${mensagem.de}.png`} />
                             <h4 className="perfil-conta">{mensagem.de}</h4>
-                            <span className="perfil-codigo">
+                            <span className="perfil-data">
                                 {(new Date().toLocaleDateString())}
                             </span>
                         </div>
