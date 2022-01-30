@@ -55,8 +55,6 @@ export default function ChatPage() {
 
     }, [excluirMensagem,listaDeMensagens]);
 
-    
-
     /*
     // Usuário
     - Usuário digita no campo textarea
@@ -87,6 +85,7 @@ export default function ChatPage() {
 
         setMensagem('');
     }
+
  
     return (
     
@@ -194,6 +193,9 @@ export default function ChatPage() {
                     color: ${appConfig.theme.colors.neutrals[400]};
                     cursor: pointer;
                     padding: 2px 5px;
+                }
+                .fechar-mensagem-semPermisao{
+                    display: none;
                 }
                 ul.lista-mensagens{
                     display: flex;
@@ -314,17 +316,30 @@ function Header() {
 }
 
 function MessageList(props) {
+    const usuarioParaAutenticacao = useRouter().query.username
     //console.log(props);
     return (
         <ul className="lista-mensagens">
             {props.mensagens.map((mensagem) => {
                 return (
                     <li className="mensagem" key={mensagem.id}>
-                        <button className="fechar-mensagem" onClick={(e) => {
-                            e.preventDefault()
-                            const keyId = mensagem.id
-                            HandleExcluirComentario(keyId)
-                        }}>X</button>
+                        {mensagem.de === usuarioParaAutenticacao
+                        ? (
+                            <button className="fechar-mensagem" onClick={(e) => {
+                                e.preventDefault()
+                                const keyId = mensagem.id
+                                HandleExcluirComentario(keyId)
+                            }}>X</button> 
+                        )
+                        : (
+                            <button className="fechar-mensagem-semPermisao" onClick={(e) => {
+                                e.preventDefault()
+                                const keyId = mensagem.id
+                                HandleExcluirComentario(keyId)
+                            }}>X</button> 
+                        )
+                        }
+                       
                         <div className="perfil-wrapper">
                             <img className="perfil-img" src={`https://github.com/${mensagem.de}.png`} />
                             <h4 className="perfil-conta">{mensagem.de}</h4>
@@ -354,6 +369,5 @@ async function HandleExcluirComentario(keyId){
     const { data, error } = await supabaseClient
         .from('mensagens')
         .delete()
-        .match({ id: keyId })
-    
+        .match({ id: keyId })  
 }
