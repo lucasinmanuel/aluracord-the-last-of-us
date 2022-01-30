@@ -1,29 +1,61 @@
 import React, {useState,useEffect} from 'react';
 import appConfig from '../config.json';
 import { createClient } from '@supabase/supabase-js';
-
+import { useRouter } from 'next/router';
+import {ButtonSendSticker} from '../src/components/ButtonSendSticker';
 
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzI5ODIyMywiZXhwIjoxOTU4ODc0MjIzfQ.pIJJlhtcdM4SP1KY-S3e5yMya4qI07xbcWUSUVkSp6w';
 const SUPABASE_URL = 'https://kamtykmggubseozmvtuj.supabase.co';
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
+function escutaMensagensTempoReal(adcionarMensagem){
+
+    return supabaseClient
+        .from('mensagens')
+        .on('INSERT', (responsiveLive) => {
+            adcionarMensagem(responsiveLive.new)
+        })
+        .subscribe();
+}
 
 export default function ChatPage() {
-  
+ 
       <div>Página do Chat</div>
-  
+    
     const [mensagem, setMensagem] = useState('');
     const [listaDeMensagens, setListaDeMensagens] = useState([]);
+    const roteamento = useRouter();
+    const usuariologado = roteamento.query.username;
+    const [excluirMensagem,setExcluirMensagem] = useState('')
 
-    useEffect(() => {
-        supabaseClient
+    useEffect(async () => {
+        await supabaseClient
         .from('mensagens')
         .select('*')
         .order('id',{ascending:false})
         .then(({data}) => {
             setListaDeMensagens(data)
         })
-    }, []);
+
+        escutaMensagensTempoReal((novaMensagem) => {
+            setListaDeMensagens((valorAtualDaLista) => {
+                return [
+                    novaMensagem,
+                    ...valorAtualDaLista,
+                ]
+            });
+        })
+
+        supabaseClient
+        .from('mensagens')
+        .on('DELETE',(responsiveExcluir) => {
+            setExcluirMensagem(responsiveExcluir.old.id)
+        })
+        .subscribe();
+
+    }, [excluirMensagem,listaDeMensagens]);
+
+    
 
     /*
     // Usuário
@@ -36,10 +68,11 @@ export default function ChatPage() {
     - [X] Vamos usar o onChange usa o useState (ter if pra caso seja enter pra limpar a variavel)
     - [X] Lista de mensagens 
     */
+
     function handleNovaMensagem(novaMensagem) {
         const mensagem = {
             //id: listaDeMensagens.length + 1,
-            de: 'LucasInmanuel',
+            de: usuariologado,
             texto: novaMensagem,
         };
 
@@ -49,16 +82,12 @@ export default function ChatPage() {
                 mensagem
             ])
             .then(({data}) => {
-                console.log('me retornou isso',data)
-                setListaDeMensagens([
-                    data[0],
-                    ...listaDeMensagens,
-                ]);
+                //console.log('me retornou isso',data)
             })
 
         setMensagem('');
     }
-
+ 
     return (
     
         <>
@@ -87,7 +116,6 @@ export default function ChatPage() {
                     max-height: 95vh;
                     padding: 32px;
                 }
-
                 .area-mensagens{
                     position: relative;
                     display: flex;
@@ -134,6 +162,39 @@ export default function ChatPage() {
                     margin-right: 12px;
                     color: ${appConfig.theme.colors.neutrals['000']};
                 }
+                .enviar-mensagem{
+                    background-color: ${appConfig.theme.colors.neutrals[400]};
+                    border: 0;
+                    border-radius: 50%;
+                    width: 40px;
+                    height: 40px;
+                    padding: 5px;
+                    margin: 8px 0;
+                    text-center: center;
+                    cursor: pointer;
+                    line-height: 40px;
+                    transition: 0.3s;
+                }
+                .enviar-mensagem:hover{
+                    background-color: ${appConfig.theme.colors.neutrals[300]};
+                }
+                .enviar-mensagem > img{
+                    width: 20px;
+                    filter: invert(93%) sepia(73%) saturate(16%) hue-rotate(269deg) brightness(105%) contrast(105%);
+                }
+                .wrapper-buttons{
+                    display: flex;
+                    flex-direction: column;
+                }
+                .fechar-mensagem{
+                    position: absolute;
+                    right: 5px;
+                    border: 1px solid ${appConfig.theme.colors.neutrals[400]};
+                    background-color: black;
+                    color: ${appConfig.theme.colors.neutrals[400]};
+                    cursor: pointer;
+                    padding: 2px 5px;
+                }
                 ul.lista-mensagens{
                     display: flex;
                     flex-direction: column-reverse;
@@ -142,10 +203,22 @@ export default function ChatPage() {
                     margin-bottom: 16px;
                     overflow-x: hidden;
                 }
+                ul.lista-mensagens::-webkit-scrollbar {
+                    width: 10px;
+                    height: 10px;
+                    background-color: ${appConfig.theme.colors.neutrals[300]};
+                    border-radius: 5px;
+                }
+                ul.lista-mensagens::-webkit-scrollbar-thumb {
+                    background: ${appConfig.theme.colors.neutrals[400]};
+                    border-radius: 5px;
+                }
                 li.mensagem{
+                    position: relative;
                     border-radius: 5px;
                     padding: 6px;
                     margin-bottom: 12px;
+                    margin-right: 8px;
                     border: 1px solid ${appConfig.theme.colors.neutrals["400"]};
                 }
                 li.mensagem:hover{
@@ -195,12 +268,31 @@ export default function ChatPage() {
                                 }}
                                 onKeyPress={(event) => {
                                     if (event.key === 'Enter') {
-                                        event.preventDefault();
-                                        handleNovaMensagem(mensagem);
+                                        
+                                        if(mensagem === ''){
+                                            event.preventDefault()
+                                        }else{
+                                            event.preventDefault();
+                                            handleNovaMensagem(mensagem);
+                                        }
+                                        
                                     }
                                 }}
                                 placeholder="Insira sua mensagem aqui..."
                             ></textarea>
+                            <div className="wrapper-buttons">
+                                <button className="enviar-mensagem" onClick={(event) => {
+                                    if(mensagem === ''){
+                                        event.preventDefault()
+                                    }else{
+                                        event.preventDefault();
+                                        handleNovaMensagem(mensagem);
+                                    }
+                                }}><img src="/icon-enviar.png" /></button>
+                                <ButtonSendSticker onStickerClick={(sticker) => {
+                                    handleNovaMensagem(':sticker: ' + sticker)
+                                }} />
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -208,6 +300,7 @@ export default function ChatPage() {
         </>
     )
 }
+
 
 function Header() {
     return (
@@ -221,12 +314,17 @@ function Header() {
 }
 
 function MessageList(props) {
-    console.log(props);
+    //console.log(props);
     return (
         <ul className="lista-mensagens">
             {props.mensagens.map((mensagem) => {
                 return (
                     <li className="mensagem" key={mensagem.id}>
+                        <button className="fechar-mensagem" onClick={(e) => {
+                            e.preventDefault()
+                            const keyId = mensagem.id
+                            HandleExcluirComentario(keyId)
+                        }}>X</button>
                         <div className="perfil-wrapper">
                             <img className="perfil-img" src={`https://github.com/${mensagem.de}.png`} />
                             <h4 className="perfil-conta">{mensagem.de}</h4>
@@ -234,11 +332,28 @@ function MessageList(props) {
                                 {(new Date().toLocaleDateString())}
                             </span>
                         </div>
-                        <p className="mensagem-enviar">{mensagem.texto}</p>
+                        <p className="mensagem-enviar">
+                            {mensagem.texto.startsWith(':sticker:') 
+                            ? (
+                                <img width="25%" src={mensagem.texto.replace(':sticker:', '')} />
+                            )
+                            : (
+                                mensagem.texto
+                            )
+                            }
+                        </p>
                     </li>
                 );
             })}
         </ul>
     )
 
+}
+
+async function HandleExcluirComentario(keyId){
+    const { data, error } = await supabaseClient
+        .from('mensagens')
+        .delete()
+        .match({ id: keyId })
+    
 }

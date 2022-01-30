@@ -21,12 +21,13 @@ function Titulo(props) {
 
 }
 
+
 export default function PaginaInicial() {
 
   const [username, setUsername] = useState(['LucasInmanuel', '.png'])
   const [usernamePage, setUsernamePage] = useState('https://github.com/');
   const roteamento = useRouter();
-
+  
   return (
     <>
       <Box
@@ -76,7 +77,7 @@ export default function PaginaInicial() {
             as="form"
             onSubmit={function (e) {
               e.preventDefault()
-              roteamento.push('/chat')
+              roteamento.push(`/chat?username=${username[0]}`)
             }}
             styleSheet={{
               display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', zIndex: '10',
@@ -139,13 +140,17 @@ export default function PaginaInicial() {
               borderColor: appConfig.theme.colors.neutrals[400],
               borderRadius: '10px',
               flex: 1,
-              minHeight: '240px', zIndex: '5', zIndex: '10'
+              minHeight: '240px', zIndex: '5', zIndex: '10',
             }}
           >
             <Image
               styleSheet={{
                 borderRadius: '50%',
                 marginBottom: '16px',
+                transition: '0.5s',
+                hover: {
+                  transform: 'scale(1.05)'
+                }
               }}
               src={`${usernamePage}` + `${username[0]}` + `${username[1]}`}
               alt="Usuário inexistente :("
