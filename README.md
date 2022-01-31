@@ -7,3 +7,12 @@ No Aluracord temos uma área de login que leva para um chat que guarda as mensag
 
 <img width="100%" src="https://i.imgur.com/F8aiwyp.jpg" />
 <img width="100%" src="https://i.imgur.com/JWOBovv.jpg" />
+
+<h2>Links</h2>
+
+<a href="https://www.linkedin.com/in/lucas-emanuel-santana-dos-santos-7431b722a" alt="linkedin">
+<img src="https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" />
+</a>
+<a href="https://www.instagram.com/lucasinmanuel/" alt="instagram">
+<img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" />
+</a>
